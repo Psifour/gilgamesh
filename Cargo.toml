@@ -1,0 +1,65 @@
+[package]
+name = "gilgamesh"
+version = "0.0.1"
+edition = "2024"
+authors = ["psifour"]
+license = "MIT OR Apache-2.0"
+description = "Deterministic key management: one identity derives every key, an encrypted vault holds the rest"
+readme = "README.md"
+autotests = false
+
+[dependencies]
+anyhow = { version = "1.0.98", features = ["backtrace"] }
+argon2 = "0.5.3"
+base64 = "0.22.1"
+bip39 = { version = "2.1.0", features = ["zeroize"] }
+chacha20poly1305 = "0.10.1"
+clap = { version = "4.5.36", features = ["derive", "env"] }
+ed25519-dalek = { version = "2.1.1", features = ["zeroize"] }
+rpassword = "7.3.1"
+getrandom = "0.3.2"
+hkdf = "0.12.4"
+hmac = "0.12.1"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+sha2 = "0.10.8"
+ssh-key = { version = "0.6.7", features = ["ed25519"] }
+tpm2-protocol = { version = "1.0.0", optional = true }
+zeroize = { version = "1.8.1", features = ["derive"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61.2", features = [
+  "Win32_System_Memory",
+  "Win32_System_TpmBaseServices",
+] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+core-foundation = { version = "0.10.1", optional = true }
+security-framework = { version = "3.7.0", features = ["OSX_10_15"], optional = true }
+security-framework-sys = { version = "2.17.0", optional = true }
+
+[dev-dependencies]
+serde_json = "1.0.140"
+tempfile = "3.19.1"
+
+[profile.dev.package.argon2]
+opt-level = 3
+
+[[bin]]
+name = "gilgamesh"
+path = "src/bin/main.rs"
+
+[lib]
+name = "gilgamesh"
+path = "src/lib.rs"
+
+[[test]]
+name = "integration"
+path = "tests/lib.rs"
+
+[features]
+sep = ["dep:core-foundation", "dep:security-framework", "dep:security-framework-sys"]
+tpm = ["dep:tpm2-protocol"]
