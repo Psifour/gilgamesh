@@ -6,8 +6,8 @@ derivation spec is [design-doc.md](design-doc.md).
 
 ## Reporting a vulnerability
 
-Email <outdatedconcept@gmail.com>. Please do not open public issues for
-exploitable vulnerabilities before a fix ships. There is no bug bounty.
+Email <outdatedconcept@gmail.com>. No formal bug bounty at this time (non-funded project), 
+but the intent is to eventually fund this in some way.
 
 gilgamesh is pre-1.0. The derivation spec (`gilgamesh.kms/v1` labels,
 encodings, and formulas) is frozen and append-only; everything else may change.
